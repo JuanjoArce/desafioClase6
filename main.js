@@ -6,14 +6,12 @@ class ProductManager {
 
 addProduct(title, description, price, thumbnail, code, stock) {
     if (!title || !description || !price || !thumbnail || !code || !stock) {
-        console.error("Todos los campos son obligatorios.");
-        return;
-    }
-
-    if (this.products.some(product => product.code === code)) {
-        console.error("Ya existe un producto con el mismo código.");
-        return;
-    }
+        return console.error('Todos los campos son obligatorios.')      
+       }
+    
+       if (this.products.some((product) => product.code === code)) {
+        return  console.error('Ya existe un producto con el mismo código.')
+       }
 
     const newProduct = {
         id: this.productContador++,
@@ -37,10 +35,14 @@ addProduct(title, description, price, thumbnail, code, stock) {
     const foundProduct = this.products.find(product => product.id === id);
 
     if (foundProduct) {
-        return foundProduct;
-    } else {
-        console.error("Not Found");
-        return null;
-    }
+        return foundProduct
+      } else {
+        console.error('Not Found')
+        return null
+      }
     }
 }
+
+
+
+
