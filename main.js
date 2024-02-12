@@ -17,6 +17,12 @@ class ProductManager {
             }
         } catch (error) {
             this.products = [];
+            this.products = [
+                { id: 1, name: "Producto 1", price: 10.99, category: "Electrónica" },
+                { id: 2, name: "Producto 2", price: 25.49, category: "Hogar" },
+                { id: 3, name: "Producto 3", price: 5.99, category: "Ropa" }
+            ];
+            this.saveProducts();
         }
     }
 
@@ -51,7 +57,7 @@ class ProductManager {
         if (index !== -1) {
             this.products[index] = { ...this.products[index], ...updatedFields };
             this.saveProducts();
-            console.log(`Producto actualizado con éxito`);
+            console.log(`Producto actualizado con exito`);
         } else {
             console.error('Producto no encontrado');
         }
@@ -62,7 +68,7 @@ class ProductManager {
         if (index !== -1) {
             this.products.splice(index, 1);
             this.saveProducts();
-            console.log(`Producto eliminado con éxito`);
+            console.log(`Producto eliminado con exito`);
         } else {
             console.error('Producto no encontrado');
         }
