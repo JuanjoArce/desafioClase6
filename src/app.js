@@ -1,10 +1,10 @@
 const express = require('express');
-const ProductManager = require('./ProductManager');
+const ProductManager = require('./main');
 
 const app = express();
 const PORT = 8080;
 
-const productManager = new ProductManager('products.json');
+const productManager = new ProductManager('../products.json');
 
 app.use(express.json());
 
