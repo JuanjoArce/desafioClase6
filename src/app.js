@@ -1,7 +1,8 @@
-// app.js
+import { productsRouter } from './routes/products.router';
 
 const express = require('express');
 const fs = require('fs');
+
 
 class ProductManager {
     constructor(filePath) {
@@ -83,7 +84,7 @@ const PORT = 8080;
 
 const productManager = new ProductManager('products.json');
 
-app.use(express.json());
+app.use(express.json(), productsRouter);
 
 app.get('/products', async (req, res) => {
     try {
