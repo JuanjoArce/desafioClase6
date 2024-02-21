@@ -1,8 +1,6 @@
-import { productsRouter } from './routes/products.router';
-
-const express = require('express');
-const fs = require('fs');
-
+import express from 'express';
+import fs from 'fs';
+import { productsRouter } from './routes/products.router.js';
 
 class ProductManager {
     constructor(filePath) {
@@ -61,7 +59,7 @@ class ProductManager {
         if (index !== -1) {
             this.products[index] = { ...this.products[index], ...updatedFields };
             this.saveProducts();
-            console.log(`Producto actualizado con exito`);
+            console.log(`Producto actualizado con éxito`);
         } else {
             console.error('Producto no encontrado');
         }
@@ -72,7 +70,7 @@ class ProductManager {
         if (index !== -1) {
             this.products.splice(index, 1);
             this.saveProducts();
-            console.log(`Producto eliminado con exito`);
+            console.log(`Producto eliminado con éxito`);
         } else {
             console.error('Producto no encontrado');
         }
@@ -116,3 +114,5 @@ app.get('/products/:pid', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en http://localhost:${PORT}`);
 });
+
+export { ProductManager };
