@@ -1,6 +1,25 @@
 import express from 'express';
+import handlebars from 'express-handlebars'
+import __dirname from './utils.js';
 import fs from 'fs';
 import { productsRouter } from './routes/products.router.js';
+
+
+app.engine('handlebars', handlebars.engine());
+app.set('views', dirname+'/views');
+app.set('view engine','handlebars');
+app.use(express.static(__dirname+'/public'))
+
+
+app.use(express.static(__dirname+'/public'))
+app.get('/',(req,res)=>{
+let testUser = {
+name:"Hilda",
+last_name:"Martinez"
+}
+res.render('index',testUser);
+})
+const server = app.listen(8080,()=>console.log("Listering on PORT 8080"))
 
 class ProductManager {
     constructor(filePath) {
