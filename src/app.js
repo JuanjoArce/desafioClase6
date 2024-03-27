@@ -3,12 +3,9 @@ import handlebars from 'express-handlebars'
 import __dirname from './utils.js';
 import fs from 'fs';
 import { productsRouter } from './routes/products.router.js';
-
 import mongoose from "mongoose";
 
-
 const app = express();
-
 const PORT = 8080;
 
 app.use(express.json(), productsRouter);
@@ -43,6 +40,3 @@ try{
     console.log(`No se pudo conectar con la BD error: ${error.message}`);
     process.exit(-1);
 }
-
-
-
