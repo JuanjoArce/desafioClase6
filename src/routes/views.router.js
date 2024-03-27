@@ -1,32 +1,12 @@
 import express from 'express';
-
 const router = express.Router();
 
-// Nuestra data
-let food = [
-    { name: "Hamburguesa", price: "100" },
-    { name: "Banana", price: "40" },
-    { name: "Soda", price: "20" },
-    { name: "Ensalada", price: "20" },
-    { name: "Pizza", price: "20" }
-];
+// Ruta para mostrar un carrito específico
+router.get('/carts/:cid', (req, res) => {
+    const { cid } = req.params;
+    // Aquí deberías obtener el carrito con el id proporcionado y pasar los productos al renderizado de la vista
+    const cartProducts = []; // Deberías obtener los productos del carrito aquí
+    res.render('cart', { products: cartProducts });
+});
 
-router.get("/user", (req, res) => {
-    let testUser = {
-        name: "Hilda",
-        last_name: "Martinez",
-        role: 'admin'
-    }
-    res.render("index",
-        {
-            user: testUser,
-            isAdmin: testUser.role === "admin",
-            style: "index.css",
-            food
-
-        })
-})
-
-
-
-export default router
+export default router;

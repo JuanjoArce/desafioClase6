@@ -1,94 +1,59 @@
 import { Router } from 'express';
-import  ProductManager  from '../controller/productManager.js';
+import Product from '../models/product.model.js';
 
-const productManager = new ProductManager("./src/files/products.json");
 const productsRouter = Router();
 
+// Método GET para obtener productos con filtros, paginación y ordenamiento
 productsRouter.get('/', async (req, res) => {
     try {
-        const limit = req.query.limit
-        
-        const allProduct = await productManager.getProduct();
-        if (!limit) {
-        res.send (allProduct)
-        }
-        const productLimit = []
-        for (let index = 0; index < limit; index++) {
-            productLimit.push(allProduct[index])
-            
-            
+        // Parámetros de consulta opcionales
+        const { limit = 10, page = 1, sort, query } = req.query;
+
+        // Filtros de búsqueda
+        let filter = {};
+        if (query) {
+            // Aquí puedes implementar la lógica para aplicar el filtro según la consulta recibida
         }
 
-        
-        res.send(productLimit)
-        
+        // Ordenamiento
+        let sortOptions = {};
+        if (sort) {
+            // Implementa la lógica para ordenar ascendente o descendentemente según el precio
+            sortOptions.price = sort === 'asc' ? 1 : -1;
+        }
 
+        // Consulta a la base de datos para obtener productos con filtros y ordenamiento
+        const products = await Product.find(filter)
+                                    .sort(sortOptions)
+                                    .limit(parseInt(limit))
+                                    .skip((parseInt(page) - 1) * parseInt(limit));
+
+        // Calcula el total de páginas
+        const totalProducts = await Product.countDocuments(filter);
+        const totalPages = Math.ceil(totalProducts / parseInt(limit));
+
+        // Determina la página anterior y siguiente
+        const prevPage = parseInt(page) > 1 ? parseInt(page) - 1 : null;
+        const nextPage = parseInt(page) < totalPages ? parseInt(page) + 1 : null;
+
+        // Devuelve la respuesta con el formato especificado
+        res.json({
+            status: 'success',
+            payload: products,
+            totalPages,
+            prevPage,
+            nextPage,
+            page: parseInt(page),
+            hasPrevPage: prevPage !== null,
+            hasNextPage: nextPage !== null,
+            prevLink: prevPage ? `/api/products?limit=${limit}&page=${prevPage}&sort=${sort}&query=${query}` : null,
+            nextLink: nextPage ? `/api/products?limit=${limit}&page=${nextPage}&sort=${sort}&query=${query}` : null
+        });
     } catch (error) {
-        console.log(error);
-        res.send('Error al recibir los productos');
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Internal Server Error' });
     }
 });
 
-productsRouter.get('/:pid', async (req, res) => {
-    try {
-        const pid = req.params.pid;
-        
-        const product = await productManager.getProductById(pid);
-        res.send(product)
-
-    } catch (error) {
-        console.log(error);
-        res.send('Error al recibir los productos');
-    }
-}); 
-
-// productsRouter.get('/:pid', async (req, res) => {
-//     try {
-//         const { pid } = req.params;
-//         const product = ProductManager.getProductById(pid);
-//         res.json(product);
-//     } catch (error) {
-//         console.log(error);
-//         res.send(`Error al recibir el producto con ID ${pid}`);
-//     }
-// });
-
-// productsRouter.post('/', async (req, res) => {
-//     try {
-//         const { title, description, code, price, status = true, stock, category } = req.body;
-//         const response = await ProductManager.addProduct({ title, description, code, price, status, stock, category });
-//         res.json(response);
-
-//     } catch (error) {
-//         console.log(error);
-//         res.send('Error al cargar el producto');
-//     }
-// });
-
-// productsRouter.put('/:pid', async (req, res) => {
-//     const { pid } = req.params;
-//     try {
-//         const { title, description, code, price, status = true, stock, category } = req.body;
-//         const response = await ProductManager.updateProduct(pid, { title, description, code, price, status, stock, category });
-//         res.json(response);
-//     } catch (error) {
-//         console.log(error);
-//         res.send(`Error en la actualización del producto con ID ${pid}`);
-//     }
-// });
-
-// productsRouter.delete('/:pid', async (req, res) => {
-//     const { pid } = req.params;
-//     try {
-//         await ProductManager.deleteProduct(pid);
-//         res.send('El producto fue eliminado correctamente');
-//     } catch (error) {
-//         console.log(error);
-//         res.send(`No se pudo eliminar el producto con ID ${pid}`);
-//     }
-// });
-
-
-
-
 export { productsRouter };
+
