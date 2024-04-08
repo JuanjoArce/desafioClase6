@@ -1,14 +1,5 @@
 <div>
-    <h1>hola {{user.name}} que gusto verte</h1> 
-    {{#if isAdmin}}
-        {{#each food}}
-            <div>
-                <p>{{this.name}}</p>
-                <p>{{this.price}}</p>
-            </div>
-        {{/each}}
-    {{else}}
-        <p> no tienes permiso para ver la lista de alimentos </p>
-    {{/if}}
+    <h1>hola {{name}} que gusto verte</h1> 
 </div>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/1desafioArce-master/src/public/js/index.js"></script>
